@@ -1,48 +1,68 @@
-const bcryptjs = require('bcryptjs');
-const User = require('../models/Users');
-const jwt = require('jsonwebtoken');
-const passwordValidator = require('../middleware/passwordValidator');
-const emailValidator = require('email-validator');
+const models = require('../models/index');
+const fs = require('fs');
 
-exports.signup = (req, res) => {
-    if ((!emailValidator.validate(req.body.email)) || (!passwordValidator.validate(req.body.password))) {
-        return res.status(400).json({ error });
-    }
-    bcryptjs.hash(req.body.password, 10)
-        .then(hash => {
-            User.create({
-                email: req.body.email,
-                username: req.body.username,
-                password: hash,
-                poste: req.body.poste
-            })
-            .then((user) => res.status(201).json({ user }))
-            .catch(error => res.status(400).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
-};
-
-exports.login = (req, res) => {
-    User.findOne({where: { email: req.body.email } })
+exports.modifyUser = (req, res) => {
+    models.Users.findOne({ where: { id: req.params.id } })
         .then(user => {
-            if (!user) {
-                return res.status(401).json({ message: 'Utilisateur non trouvé' });
-            }
-            bcryptjs.compare(req.body.password, user.password)
-                .then(valid => {
-                    if (!valid) {
-                        return res.status(401).json({ message: 'mdp non trouvé' });
-                    }
-                    res.status(200).json({
-                        userId: user.id,
-                        token: jwt.sign(
-                            { userId: user.id },
-                            'RANDOM_TOKEN_SECRET',
-                            { expiresIn: '24h' }
-                        )
-                    });
-                })
-                .catch(error => res.status(500).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
+            user.update({
+                    username: req.body.username,
+                    poste: req.body.poste
+            })
+            .then(() => res.status(200).json({ message: 'Utilisateur modifié' }))
+            .catch(error => res.status(400).json({ error }));
+        });
 };
+
+exports.deleteUser = (req, res) => {
+    models.Users.findOne({ where: { id: req.params.id } })
+        .then(user => {
+            let filename = user.imageUrl.split('/images/')[1];
+            if (filename !== undefined) {
+                fs.unlink(`images/${filename}`,
+                    function (err) {
+                        if (err) {
+                            console.log('error');
+                        } else {
+                            console.log('fichier supprimé');
+                        }
+                    },
+                );
+            }
+        });
+        models.Users.destroy({ where: { id: req.params.id } })
+            .then(() => res.status(200).json({ message: 'Utilisateur supprimé' }))
+            .catch(error => res.status(400).json({ error }));
+};
+
+exports.getOneUser = (req, res) => {
+    models.Users.findOne({ 
+        include: [{
+            model: models.Posts,
+            attributes: ['title', 'id']
+        }],
+        where: { id: req.params.id } })
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(404).json({ error }));
+};
+
+exports.getAllUsers = (req, res) => {
+    models.Users.findAll()
+        .then((users) => { res.send(users)})
+        .catch(error => res.status(400).json({ error }));
+};
+
+exports.uploadAvatar = async (req, res) => {
+    const user = await models.Users.findOne({ 
+        where: { id: req.params.id } 
+    })
+    await user.update(
+        {
+            imageUrl: req.file ? 
+            `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            :null 
+        }
+    )
+    .then(() => res.status(200).json({ message: 'Profil modifié' }))
+    .catch(error => res.status(400).json({ error }));   
+};
+

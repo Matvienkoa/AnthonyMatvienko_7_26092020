@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../config/database');
+const db = require('../config/config');
 
 const Posts = db.define('posts', {
     title: {
@@ -10,6 +10,9 @@ const Posts = db.define('posts', {
     },
     userId: {
         type: Sequelize.INTEGER
+    },
+    imageUrl: {
+        type: Sequelize.STRING
     }
 });
 

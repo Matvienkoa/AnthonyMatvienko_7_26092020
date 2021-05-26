@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../config/database');
+const db = require('../config/config');
 
 const Users = db.define('users', {
     email: {
@@ -13,6 +13,9 @@ const Users = db.define('users', {
         type: Sequelize.STRING
     },
     poste: {
+        type: Sequelize.STRING
+    },
+    imageUrl: {
         type: Sequelize.STRING
     }
 });

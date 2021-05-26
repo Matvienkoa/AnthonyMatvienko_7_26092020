@@ -1,8 +1,9 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const path = require('path');
+const helmet = require('helmet');
 
 //Database
-const db = require('./config/database');
+const db = require('./config/config');
 
 //Test connexion DB
 db.authenticate()
@@ -19,9 +20,12 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json());
+app.use(helmet());
+app.use(express.json());
 
-app.use('/api/auth', require('./routes/users'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/profile', require('./routes/users'));
 app.use('/api/posts', require('./routes/posts'));
 
 module.exports = app;

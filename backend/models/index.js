@@ -1,15 +1,23 @@
-const Comments = require('./Comments');
-const Likes = require('./Likes');
-const Posts = require('./Posts');
-const Users = require('./Users');
+const Users = require('../models/Users');
+const Posts = require('../models/Posts');
+const Comments = require('../models/Comments');
+const Likes = require('../models/Likes');
 
-Posts.belongsTo(Users);
-Posts.hasMany(Comments);
-Posts.hasMany(Likes);
 Users.hasMany(Posts);
 Users.hasMany(Comments);
 Users.hasMany(Likes);
-Comments.belongsTo(Posts);
+Posts.hasMany(Comments);
+Posts.hasMany(Likes);
+Posts.belongsTo(Users);
 Comments.belongsTo(Users);
+Comments.belongsTo(Posts);
 Likes.belongsTo(Users);
 Likes.belongsTo(Posts);
+
+module.exports = {
+    Users,
+    Posts,
+    Comments,
+    Likes
+};
+
