@@ -29,24 +29,24 @@ export default {
 </script>
 
 <style scoped>
-img {
-    width: 150px;
-    margin-left: 20px;
-}
-nav {
-    height: 70px;
-    background-image: repeating-linear-gradient(135deg, rgba(68,68,68,0.07) 0px, rgba(68,68,68,0.07) 2px,transparent 2px, transparent 4px),repeating-linear-gradient(45deg, rgba(68,68,68,0.07) 0px, rgba(68,68,68,0.07) 2px,transparent 2px, transparent 4px),linear-gradient(0deg, rgb(115,172,238),rgb(49,117,217));
-}
-i {
-    color: rgb(252, 252, 252);
-    padding-left: 20px;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-@media screen and (max-width: 475px) {
-    img{
-        width: 120px;
+    img {
+        width: 150px;
+        margin-left: 20px;
     }
-}
+    nav {
+        height: 70px;
+        background-image: repeating-linear-gradient(135deg, rgba(68,68,68,0.07) 0px, rgba(68,68,68,0.07) 2px,transparent 2px, transparent 4px),repeating-linear-gradient(45deg, rgba(68,68,68,0.07) 0px, rgba(68,68,68,0.07) 2px,transparent 2px, transparent 4px),linear-gradient(0deg, rgb(115,172,238),rgb(16,34,65));
+    }
+    i {
+        color: rgb(252, 252, 252);
+        padding-left: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 475px) {
+        img{
+            width: 120px;
+        }
+    }
 </style>

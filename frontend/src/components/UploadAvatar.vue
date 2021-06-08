@@ -1,17 +1,22 @@
 <template>
-  <div id="upload-avatar">
+  <div v-if="userInfos.imageUrl" id="avatar">
+      <img :src="userInfos.imageUrl" />
+  </div>
+  <div v-if="userInfos.imageUrl == null" id="upload-avatar">
     <form @submit.prevent="uploadAvatar" id="form">
-      <label for="image" class="form-label">Sélectionnez un fichier :</label>
-      <input @change="onFileSelected" type="file" ref="imageUrl" name="image" class="form-control">
-      <button type="submit" class="btn btn-success">Envoyer</button>
+      <label for="image" class="form-label">Ajouter un Avatar :</label>
+      <input @change="onFileSelected" type="file" ref="imageUrl" name="image" class="form-control" required>
+      <button type="submit" class="btn btn-success">Ajouter</button>
     </form>
   </div>
 </template>
 
 <script>
+import axiosConfig from '../axios';
 
 export default {
     name: 'UploadAvatar',
+    props: ["userInfos"],
     data() {
         return {
             imageUrl: "",
@@ -22,37 +27,57 @@ export default {
             this.imageUrl = event.target.files[0];
         },
         uploadAvatar() {
-          const formData = new FormData();
-          formData.append("userId", JSON.stringify(this.$store.state.user.userId));
-          formData.append("imageUrl", this.imageUrl);
-          this.$store.dispatch("uploadAvatar", [formData, this.$store.state.user.userId])
-          .then(() => {
-              //this.$router.push('/home')
-          })
-          .catch((error) => {
-              console.log(error);
-          })
+            const formData = new FormData();
+            formData.append("userId", JSON.stringify(this.$store.state.user.userId));
+            formData.append("imageUrl", this.imageUrl);
+            axiosConfig.post(`/profile/${this.$store.state.user.userId}/upload`, formData)
+            .then(() => {
+              this.$store.dispatch('getUserInfos');
+            })
+            .catch((error) => {
+                this.error = error.response.data
+                console.log(error.response.data);
+            })
+            this.imageUrl = null
         }
     },
 }
 </script>
 
 <style scoped>
-#edit-avatar{
-  border-radius: 30px;
-  box-shadow: 0px 2px 3px rgb(126, 184, 223) ;
-  width: 80%;
-  margin: auto;
-}
-#form {
-  width: 80%;
-  margin: auto;
-  padding-top: 10px;
-  padding-bottom: 20px;
-  margin-bottom: 30px;
-}
-#form input{
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
+  #avatar{
+    border-radius: 80px;
+    overflow: hidden;
+    width: 150px;
+    height: 150px;
+  }
+  img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  #upload-avatar{
+    text-align: start;
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  #form input{
+      margin-bottom: 15px;
+      font-size: 0.8rem;
+  }
+  #form button{
+    font-size: 0.8rem;
+  }
+
+  @media screen and (max-width: 700px) {
+      #avatar{
+        margin-bottom: 30px;
+      }
+      #upload-avatar{
+        margin-bottom: 20px;
+        text-align: center;
+      }
+  }
 </style>

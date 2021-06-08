@@ -3,9 +3,9 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 exports.createPosts = (req, res, next) => {
-    //const token = req.headers.authorization.split(' ')[1];
-    //const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    //const userId = decodedToken.userId;
+    if (req.body.title == "" || req.body.content == "") {
+        return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
+    }
     models.Posts.create({
         title: req.body.title,
         content: req.body.content,
@@ -14,7 +14,7 @@ exports.createPosts = (req, res, next) => {
         `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         :null
     })
-    .then(() => res.status(201).json({ message: 'Post Créé' }))
+    .then(() => res.status(201).json(req.body))
     .catch(error => res.status(400).json({ error }));    
 };
 
@@ -81,7 +81,7 @@ exports.getAllPosts = (req, res, next) => {
             attributes: ['username', 'imageUrl']
         },{
             model: models.Likes,
-            attributes: ['likes']
+            attributes: ['likes', 'postId', 'userId']
         },{
             model: models.Comments,
             attributes: ['content']

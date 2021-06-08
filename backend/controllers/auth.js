@@ -5,6 +5,9 @@ const passwordValidator = require('../middleware/passwordValidator');
 const emailValidator = require('email-validator');
 
 exports.signup = (req, res) => {
+    if (req.body.email == "" || req.body.password == "") {
+        return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
+    }
     if ((!emailValidator.validate(req.body.email)) || (!passwordValidator.validate(req.body.password))) {
         return res.status(400).json({ message: 'Format email/password invalide' });
     }
@@ -23,6 +26,9 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
+    if (req.body.email == "" || req.body.password == "") {
+        return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
+    }
     models.Users.findOne({where: { email: req.body.email } })
         .then(user => {
             if (!user) {
@@ -31,7 +37,7 @@ exports.login = (req, res) => {
             bcryptjs.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
-                        return res.status(401).json({ message: 'mdp non trouvé' });
+                        return res.status(401).json({ message: 'Mot de passe incorrect' });
                     }
                     res.status(200).json({
                         userId: user.id,

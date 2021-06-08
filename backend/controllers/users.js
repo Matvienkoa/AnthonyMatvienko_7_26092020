@@ -2,6 +2,9 @@ const models = require('../models/index');
 const fs = require('fs');
 
 exports.modifyUser = (req, res) => {
+    if (req.body.username == "") {
+        return res.status(400).json({ message: "Merci de renseigner un nom d'utilisateur"});
+    }
     models.Users.findOne({ where: { id: req.params.id } })
         .then(user => {
             user.update({
@@ -62,7 +65,7 @@ exports.uploadAvatar = async (req, res) => {
             :null 
         }
     )
-    .then(() => res.status(200).json({ message: 'Profil modifié' }))
+    .then(() => res.status(200).json({ message: 'Avatar ajouté' }))
     .catch(error => res.status(400).json({ error }));   
 };
 

@@ -6,19 +6,20 @@ const likesCtrl = require('../controllers/likes');
 const Auth = require('../middleware/auth');
 const multerImage = require('../middleware/multerImage');
 
-router.get('/', postsCtrl.getAllPosts);
-router.post('/', multerImage, postsCtrl.createPosts);
-router.get('/:id', postsCtrl.getOnePost);
-router.put('/:id', multerImage, postsCtrl.modifyPost);
-router.delete('/:id', multerImage, postsCtrl.deletePost);
+router.get('/', Auth, postsCtrl.getAllPosts);
+router.post('/', Auth, multerImage, postsCtrl.createPosts);
+router.get('/:id', Auth, postsCtrl.getOnePost);
+router.put('/:id', Auth, multerImage, postsCtrl.modifyPost);
+router.delete('/:id', Auth, multerImage, postsCtrl.deletePost);
 
 router.post('/:postId/like', Auth, likesCtrl.likePost);
+router.delete('/:postId/like/:id', likesCtrl.deleteLike);
 
-router.get('/:postId/comment', commentsCtrl.getAllComments);
-router.post('/:postId/comment', commentsCtrl.createComment);
-router.get('/:postId/comment/:id', commentsCtrl.getOneComment);
-router.put('/:postId/comment/:id', commentsCtrl.modifyComment);
-router.delete('/:postId/comment/:id', commentsCtrl.deleteComment);
+router.get('/:postId/comment', Auth, commentsCtrl.getAllComments);
+router.post('/:postId/comment', Auth, commentsCtrl.createComment);
+router.get('/:postId/comment/:id', Auth, commentsCtrl.getOneComment);
+router.put('/:postId/comment/:id', Auth, commentsCtrl.modifyComment);
+router.delete('/:postId/comment/:id', Auth, commentsCtrl.deleteComment);
 
 
 module.exports = router;

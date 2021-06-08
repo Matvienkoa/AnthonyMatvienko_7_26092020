@@ -7,7 +7,7 @@ const db = require('./config/config');
 
 //Test connexion DB
 db.authenticate()
-    .then(() => console.log('Database connected el fifou de la muerte'))
+    .then(() => console.log('Database connected'))
     .catch(err => console.log('Error: ' + err))
 
 const app = express();

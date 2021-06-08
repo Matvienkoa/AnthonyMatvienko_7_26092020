@@ -3,26 +3,22 @@
     <div id="profileInfos">
         <h1>Mes Informations</h1>
         <div id="infosContainer">
-            <div v-if="userInfos.imageUrl != null" id="avatar">
-                <img :src="userInfos.imageUrl" />
-            </div>
+            <UploadAvatar :userInfos="userInfos"/>
             <div id="infos">
                 <p>Nom d'utilisateur : {{ userInfos.username }}</p>
                 <p>Poste occupé : {{ userInfos.poste }}</p>
                 <p>Adresse mail : {{ userInfos.email }}</p>
             </div>
         </div>
-        <div id="button">
-            <button v-if="userInfos.imageUrl == null && modeavatar == 'showavatar'" @click="switchToUploadAvatar()" class="btn btn-success">Ajouter un avatar</button>
-            <button v-if="modeavatar == 'uploadavatar'" @click="switchToShowAvatar()" class="btn btn-warning">Annuler</button>
-            <button v-if="mode == 'readprofile'" @click="switchToEditProfile()" class="btn btn-success">Modifier mon Profil</button>
-            <button v-if="mode == 'editprofile'" @click="switchToReadProfile()" class="btn btn-warning">Annuler la Modification</button>
+        <EditProfile/>
+        <div v-if="mode == 'deleteprofile'" id="delete-card">
+            <span id="confirmationdelete">Etes-vous sûr de vouloir supprimer votre Profil?</span>
             <router-link to="/">
-            <button @click="deleteProfile(userInfos)" class="btn btn-danger" id="btn-delete-profile">Supprimer mon Profil</button>
+                <button @click="deleteProfile(userInfos)" class="btn btn-success" id="btn-yes">Oui</button>
             </router-link>
+            <button @click="switchToProfile()" class="btn btn-danger" id="btn-no">Non</button>
         </div>
-        <UploadAvatar v-if="modeavatar == 'uploadavatar'" />
-        <EditProfile v-if="mode == 'editprofile'" />
+        <button v-if="mode == 'profile'" @click="switchToDeleteProfile()" class="btn btn-danger" id="btn-delete-profile">Supprimer mon Profil</button>
         <h2>Mes posts</h2>
         <div id="listPosts">
             <ul v-for="post in userInfos.posts" :key="post.title">
@@ -31,10 +27,8 @@
                 </router-link>
             </ul>
         </div>
-    </div>
+    </div> 
 </template>
-
-
 
 <script>
 import Nav from '@/components/Nav.vue'
@@ -51,11 +45,10 @@ export default {
     },
     data() {
         return {
-            mode: 'readprofile',
-            modeavatar: 'showavatar'
+            mode: 'profile',
         }
     },
-    mounted: function () {
+    created: function () {
        this.$store.dispatch('getUserInfos');
     },
     computed: {
@@ -64,48 +57,25 @@ export default {
       }),
     },
     methods: {
-        switchToEditProfile() {
-            this.mode = 'editprofile';
+        switchToDeleteProfile() {
+            this.mode = 'deleteprofile';
         },
-        switchToReadProfile() {
-            this.mode = 'readprofile';
+        switchToProfile() {
+            this.mode = 'profile';
         },
         deleteProfile(userInfos) {
             this.$store.dispatch('deleteProfile', userInfos.id)
-        },
-        switchToUploadAvatar() {
-            this.modeavatar = 'uploadavatar';
-        },
-        switchToShowAvatar() {
-            this.modeavatar = 'showavatar';
+            this.switchToProfile()
         },
     }
 }
-
-
 </script>
 
 <style scoped>
-    #profileInfos{
-        height: 100vh;
-        margin-bottom: -90px;
-    }
-    #avatar{
-        border-radius: 80px;
-        overflow: hidden;
-        width: 150px;
-        height: 150px;
-    }
-    img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-    }
     #infosContainer{
         display: flex;
         justify-content: space-around;
-        width: 80%;
+        width: 90%;
         max-width: 700px;
         margin: auto;
         margin-bottom: 30px;
@@ -124,18 +94,30 @@ export default {
     ul{
         text-align: start;
         margin: auto;
+        padding: 0;
     }
-    #button{
+    #delete-card{
         display: flex;
-        justify-content: space-around;
         width: 80%;
-        max-width: 700px;
         margin: auto;
+        justify-content: space-around;
+        align-items: center;
+        border-radius: 30px;
+        box-shadow: 0px 2px 3px rgb(183, 79, 85) ;
+        max-width: 700px;
+        padding-top: 30px;
+        padding-bottom: 30px;
         margin-bottom: 30px;
     }
-
+    #confirmationdelete{
+        font-size: 1.2rem;
+    }
+    #btn-delete-profile{
+        margin-bottom: 20px;
+        font-size: 0.8rem;
+    }
     #listPosts{
-        width: 80%;
+        width: 70%;
         max-width: 700px;
         margin: auto;
         margin-top: 30px;
@@ -145,8 +127,12 @@ export default {
         color: #000;
     }
     li{
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         list-style: none;
+        color: rgb(23, 47, 90);
+        /*border-bottom: 2px solid rgb(27, 68, 138);*/
+        box-shadow: 0px 2px 0px rgb(126, 184, 223);
+        margin-bottom: 15px;
     }
 
     @media screen and (max-width: 700px) {
@@ -154,9 +140,6 @@ export default {
             flex-direction: column;
             margin: auto;
             align-items: center;
-        }
-        #avatar{
-            margin-bottom: 30px;
         }
         #infos{
             margin-bottom: 30px;

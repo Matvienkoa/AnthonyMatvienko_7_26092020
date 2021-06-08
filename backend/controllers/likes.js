@@ -9,3 +9,9 @@ exports.likePost = (req, res) => {
     .then(() => res.status(201).json({ message: 'like ajouté !' }))
     .catch(error => res.status(400).json({ error }));   
 };
+
+exports.deleteLike = (req, res) => {
+    models.Likes.destroy({ where: { id: req.params.id } })
+    .then(() => res.status(200).json({ message: 'Like supprimé' }))
+    .catch(error => res.status(400).json({ error }));
+};

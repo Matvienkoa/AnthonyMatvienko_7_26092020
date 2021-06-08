@@ -1,21 +1,21 @@
 <template>
   <Nav/>
-  <div id="message">
-    <h1>{{post.title}}</h1>
-    <img :src="post.imageUrl" />
-    <div id="message-content">
-      <p> {{ post.content }} </p>
+  <div id="page">
+    <div id="message">
+      <h1>{{post.title}}</h1>
+      <img :src="post.imageUrl" />
+      <div id="message-content">
+        <p> {{ post.content }} </p>
+      </div>
     </div>
+    <div id="buttons">
+      <SendComment :id="id"/>
+      <EditPost :id="id" v-if="post.userId == user.userId || userInfos.isAdmin === 1"/>
+    </div>
+    <button v-if="post.userId == user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete-post" @click.prevent="deletePost(post)">Supprimer le post</button>
+    <h3 v-if="post.comments && post.comments.length > 0">Commentaires</h3>
+    <CommentCard v-for="comment in comments" :key="comment.id" :comment="comment" />
   </div>
-  <button v-if="modecomment == 'readcomments'"  @click="switchToSendComment()" class="btn btn-success" id="btn-comment">Commenter</button>
-  <SendComment v-if="modecomment == 'sendcomment'" :id="id" />
-  <button v-if="modecomment == 'sendcomment'" @click="switchToReadComments()" class="btn btn-warning" id="btn-cancel-comment">Annuler le commentaire</button>
-  <button v-if="modepost == 'readpost'" @click="switchToEditPost()" class="btn btn-success">Modifier le Post</button>
-  <EditPost v-if="modepost == 'editpost'" :id="id" />
-  <button v-if="modepost == 'editpost'" @click="switchToReadPost()" class="btn btn-warning">Annuler la modification</button>
-  <button class="btn btn-danger" @click.prevent="deletePost(post)">Supprimer le post</button>
-  <h3 v-if="post.comments && post.comments.length > 0">Commentaires</h3>
-  <CommentCard v-for="comment in comments" :key="comment.id" :comment="comment" />
 </template>
 
 <script>
@@ -34,35 +34,19 @@ export default {
     EditPost,
     CommentCard,
   },
-  mounted: function () {
+  created: function () {
         this.$store.dispatch('getOnePost', this.id);
         this.$store.dispatch('getComments', this.id);
-  },
-  data() {
-    return {
-      modecomment: 'readcomments',
-      modepost: 'readpost',
-    }
   },
   computed: {
     ...mapState([
       'comments',
-      'post'
+      'post',
+      'user',
+      'userInfos',
     ])
   },
   methods: {
-    switchToSendComment() {
-      this.modecomment = 'sendcomment';
-    },
-    switchToReadComments() {
-      this.modecomment = 'readcomments';
-    },
-    switchToEditPost() {
-      this.modepost = 'editpost';
-    },
-    switchToReadPost() {
-      this.modepost = 'readpost';
-    },
     deletePost(post) {
       this.$store.dispatch('deletePost', post)
       .then(() => {
@@ -110,12 +94,10 @@ export default {
     margin-left: 15px;
     text-align: start;
   }
-  button{
-    margin-right: 5px;
-    margin-left: 5px;
-    margin-bottom: 15px;
-  }
   h3{
     margin-top: 10px;
+  }
+  #btn-delete-post{
+    font-size: 0.8rem;
   }
 </style>

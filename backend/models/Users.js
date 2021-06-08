@@ -17,6 +17,9 @@ const Users = db.define('users', {
     },
     imageUrl: {
         type: Sequelize.STRING
+    },
+    isAdmin: {
+        type: Sequelize.INTEGER
     }
 });
 
