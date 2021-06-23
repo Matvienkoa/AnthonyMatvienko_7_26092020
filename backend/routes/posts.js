@@ -3,23 +3,23 @@ const router = express.Router();
 const postsCtrl = require('../controllers/posts');
 const commentsCtrl = require('../controllers/comments');
 const likesCtrl = require('../controllers/likes');
-const Auth = require('../middleware/auth');
-const multerImage = require('../middleware/multerImage');
+const { checkJWT, checkUser } = require('../middleware/auth');  //Middlewares Check User and Auth
+const multerImage = require('../middleware/multerImage');       //Middleware Management Images
 
-router.get('/', Auth, postsCtrl.getAllPosts);
-router.post('/', Auth, multerImage, postsCtrl.createPosts);
-router.get('/:id', Auth, postsCtrl.getOnePost);
-router.put('/:id', Auth, multerImage, postsCtrl.modifyPost);
-router.delete('/:id', Auth, multerImage, postsCtrl.deletePost);
+router.get('/', checkJWT, checkUser, postsCtrl.getAllPosts);
+router.post('/', checkJWT, checkUser, multerImage, postsCtrl.createPosts);
+router.get('/:id', checkJWT, checkUser, postsCtrl.getOnePost);
+router.put('/:id', checkJWT, checkUser, multerImage, postsCtrl.modifyPost);
+router.delete('/:id', checkJWT, checkUser, multerImage, postsCtrl.deletePost);
 
-router.post('/:postId/like', Auth, likesCtrl.likePost);
-router.delete('/:postId/like/:id', likesCtrl.deleteLike);
+router.post('/:postId/like', checkJWT, checkUser, likesCtrl.likePost);
+router.delete('/:postId/like/:id', checkJWT, checkUser, likesCtrl.deleteLike);
 
-router.get('/:postId/comment', Auth, commentsCtrl.getAllComments);
-router.post('/:postId/comment', Auth, commentsCtrl.createComment);
-router.get('/:postId/comment/:id', Auth, commentsCtrl.getOneComment);
-router.put('/:postId/comment/:id', Auth, commentsCtrl.modifyComment);
-router.delete('/:postId/comment/:id', Auth, commentsCtrl.deleteComment);
+router.get('/:postId/comment', checkJWT, checkUser, commentsCtrl.getAllComments);
+router.post('/:postId/comment', checkJWT, checkUser, commentsCtrl.createComment);
+router.get('/:postId/comment/:id', checkJWT, checkUser, commentsCtrl.getOneComment);
+router.put('/:postId/comment/:id', checkJWT, checkUser, commentsCtrl.modifyComment);
+router.delete('/:postId/comment/:id', checkJWT, checkUser, commentsCtrl.deleteComment);
 
 
 module.exports = router;

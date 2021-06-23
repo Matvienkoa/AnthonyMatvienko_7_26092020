@@ -1,10 +1,13 @@
 const express = require('express');
 const path = require('path');
+
+//Sécurity
 const helmet = require('helmet');
+const hpp = require("hpp");
+const rateLimit = require("./middleware/limiter");
 
 //Database
 const db = require('./config/config');
-
 //Test connexion DB
 db.authenticate()
     .then(() => console.log('Database connected'))
@@ -12,7 +15,7 @@ db.authenticate()
 
 const app = express();
 
-// === Configuration des headers, CORS ===
+// === Configuration Headers, CORS ===
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -20,8 +23,11 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(helmet());
 app.use(express.json());
+
+app.use(helmet());
+app.use(hpp());
+app.use("/api/auth", rateLimit.authLimiter);
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', require('./routes/auth'));

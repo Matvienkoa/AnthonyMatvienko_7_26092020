@@ -1,6 +1,8 @@
 const models = require('../models/index');
 
+// Create Comment
 exports.createComment = (req, res) => {
+    // Empty Inputs
     if (req.body.content == "") {
         return res.status(400).json({ message: "Merci de renseigner un commentaire"});
     }
@@ -13,6 +15,7 @@ exports.createComment = (req, res) => {
     .catch(error => res.status(400).json({ error })); 
 };
 
+// Edit Comment
 exports.modifyComment = (req, res) => {
     models.Comments.update(
         {
@@ -26,12 +29,14 @@ exports.modifyComment = (req, res) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+// Delete Comment
 exports.deleteComment = (req, res) => {
     models.Comments.destroy({ where: { id: req.params.id } })
     .then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
     .catch(error => res.status(400).json({ error }));
 };
 
+// Get One Comment
 exports.getOneComment = (req, res) => {
     models.Comments.findOne({ 
         include: [{
@@ -43,6 +48,7 @@ exports.getOneComment = (req, res) => {
     .catch(error => res.status(404).json({ error }));
 };
 
+// Get All Comments
 exports.getAllComments = (req, res) => {
     models.Comments.findAll({ 
         include: [{

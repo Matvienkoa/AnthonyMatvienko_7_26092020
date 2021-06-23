@@ -1,7 +1,9 @@
 const models = require('../models/index');
 const fs = require('fs');
 
+// Edit Profile
 exports.modifyUser = (req, res) => {
+    // Empty Inputs
     if (req.body.username == "") {
         return res.status(400).json({ message: "Merci de renseigner un nom d'utilisateur"});
     }
@@ -16,6 +18,7 @@ exports.modifyUser = (req, res) => {
         });
 };
 
+// Delete Profile
 exports.deleteUser = (req, res) => {
     models.Users.findOne({ where: { id: req.params.id } })
         .then(user => {
@@ -37,6 +40,7 @@ exports.deleteUser = (req, res) => {
             .catch(error => res.status(400).json({ error }));
 };
 
+// Get Profile
 exports.getOneUser = (req, res) => {
     models.Users.findOne({ 
         include: [{
@@ -48,12 +52,14 @@ exports.getOneUser = (req, res) => {
     .catch(error => res.status(404).json({ error }));
 };
 
+// Get Profiles
 exports.getAllUsers = (req, res) => {
     models.Users.findAll()
         .then((users) => { res.send(users)})
         .catch(error => res.status(400).json({ error }));
 };
 
+// Post Avatar Profile
 exports.uploadAvatar = async (req, res) => {
     const user = await models.Users.findOne({ 
         where: { id: req.params.id } 

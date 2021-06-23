@@ -36,6 +36,7 @@ export default {
                 userId: this.$store.state.user.userId
             })
             .then(() => {
+                window.alert("Votre Profil a bien été modifié!")
                 this.$store.dispatch('getUserInfos');
                 this.switchToReadProfile();
             })
@@ -58,7 +59,7 @@ export default {
     max-width: 700px;
     margin: auto;
     }
-    #form {
+    #form{
     width: 80%;
     margin: auto;
     padding-top: 10px;

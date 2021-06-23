@@ -5,13 +5,12 @@
       <div id="comment-content">
         <p>{{ comment.content }}</p>
       </div>
-
     </div>
     <button v-if="comment.userId == user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete" @click.prevent="deleteComment(comment)">Supprimer le Commentaire</button>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 let moment = require('moment');
 moment.locale('fr');
 
@@ -23,16 +22,21 @@ moment.locale('fr');
       }
     },
     methods: {
+      ...mapActions(["getUserInfos"]),
       deleteComment(comment) {
         this.$store.dispatch('deleteComment', comment)
+        window.alert("Votre Commentaire a bien été supprimé!")
       }
     },
     computed: {
-    ...mapState([
-      'user',
-      'userInfos',
-    ]),
-  },
+      ...mapState([
+        'user',
+        'userInfos',
+      ]),
+    },
+    created: function () {
+        this.getUserInfos();
+    }
   }
 </script>
 
@@ -67,6 +71,7 @@ moment.locale('fr');
     margin-top: 5px;
     margin-left: 15px;
     text-align: start;
+    overflow-wrap: break-word;
   }
   #btn-delete{
     margin-bottom: 20px;

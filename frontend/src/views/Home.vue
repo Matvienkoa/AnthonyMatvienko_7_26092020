@@ -21,11 +21,8 @@ export default {
 </script>
 
 <style scoped>
-  template{
-    height: 100vh;
-  }
-  h1 {
-    margin-bottom: 20px;
-    margin-top: 20px;
+  h1{
+    margin-bottom: 30px;
+    margin-top: 30px;
   }
 </style>

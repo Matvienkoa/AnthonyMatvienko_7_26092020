@@ -10,8 +10,8 @@
       <p v-else>Tu as déjà un compte? <span @click="switchToLogin()" id="login">Se connecter</span></p>
       <div class="form"> 
         <input v-model="email" type="email" class="form-control" placeholder="Adresse mail" required>
-        <input v-model="username" type="text" class="form-control" placeholder="Username" v-if="mode == 'create'" required>
-        <input v-model="poste" type="text" class="form-control" placeholder="Poste occupé" v-if="mode == 'create'" required>
+        <input v-model="username" type="text" class="form-control" placeholder="Nom d'Utilisateur" v-if="mode == 'create'" required>
+        <input v-model="poste" type="text" class="form-control" placeholder="Poste occupé (Facultatif)" v-if="mode == 'create'" required>
         <input v-model="password" type="password" class="form-control" placeholder="Mot de passe" required>
         <button @click="login()" class="btn btn-primary" v-if="mode == 'login'">Connexion</button>
         <button @click="createAccount()" class="btn btn-primary" v-if="mode == 'create'">Inscription</button>
@@ -19,17 +19,11 @@
       </div>
     </div>
   </div>
-  <Footer/>
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue'
-
   export default {
     name: 'Login',
-    components: {
-      Footer,
-    },
     data() {
       return {
         mode: 'login',
@@ -78,23 +72,26 @@ import Footer from '@/components/Footer.vue'
 </script>
 
 <style scoped>
-  #logoLogin {
+  #logoLogin{
     width: 25%;
     min-width: 200px;
     max-width: 400px;
   }
-  .form {
+  .form{
     width: 80%;
     max-width: 400px;
     margin: auto;
     margin-top: 5px;
+  }
+  button{
+    margin-bottom: 30px;
   }
   h2, p{
     width: 80%;
     margin: auto;
     margin-bottom: 10px;
   }
-  input {
+  input{
     margin-bottom: 20px;
   }
   #create, #login{
@@ -103,14 +100,12 @@ import Footer from '@/components/Footer.vue'
     color: rgb(51, 134, 243);
     margin-left: 10px;
   }
-  .loginCard{
-    height: 100vh;
-    margin-bottom: -90px;
-  }
   #error{
     margin-top: 30px;
     color: red;
     font-weight: bold;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
   }
 </style>
 

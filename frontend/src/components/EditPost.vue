@@ -55,6 +55,7 @@ export default {
       }
       axiosConfig.put(`/posts/${this.id}`, formData)
       .then(() => {
+        window.alert("Votre Message a bien été Modifié!")
         this.$store.dispatch('getOnePost', this.id);
         this.switchToReadPost();
       })
@@ -71,13 +72,13 @@ export default {
 </script>
 
 <style scoped>
-  #formPost {
+  #formPost{
     width: 80%;
     margin: auto;
     padding-top: 15px;
     margin-bottom: 30px;
   }
-  input {
+  input{
     margin-bottom: 20px;
   }
   .message{

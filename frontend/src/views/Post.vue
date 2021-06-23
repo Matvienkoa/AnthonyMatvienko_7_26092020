@@ -1,21 +1,19 @@
 <template>
   <Nav/>
-  <div id="page">
-    <div id="message">
-      <h1>{{post.title}}</h1>
-      <img :src="post.imageUrl" />
-      <div id="message-content">
-        <p> {{ post.content }} </p>
-      </div>
+  <div id="message">
+    <h1>{{post.title}}</h1>
+    <img :src="post.imageUrl" />
+    <div id="message-content">
+      <p> {{ post.content }} </p>
     </div>
-    <div id="buttons">
-      <SendComment :id="id"/>
-      <EditPost :id="id" v-if="post.userId == user.userId || userInfos.isAdmin === 1"/>
-    </div>
-    <button v-if="post.userId == user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete-post" @click.prevent="deletePost(post)">Supprimer le post</button>
-    <h3 v-if="post.comments && post.comments.length > 0">Commentaires</h3>
-    <CommentCard v-for="comment in comments" :key="comment.id" :comment="comment" />
   </div>
+  <div id="buttons">
+    <SendComment :id="id"/>
+    <EditPost :id="id" v-if="post.userId == user.userId || userInfos.isAdmin === 1"/>
+  </div>
+  <button v-if="post.userId == user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete-post" @click.prevent="deletePost(post)">Supprimer le post</button>
+  <h3 v-if="post.comments && post.comments.length > 0">Commentaires</h3>
+  <CommentCard v-for="comment in comments" :key="comment.id" :comment="comment" />
 </template>
 
 <script>
@@ -35,6 +33,7 @@ export default {
     CommentCard,
   },
   created: function () {
+        this.$store.dispatch('getUserInfos');
         this.$store.dispatch('getOnePost', this.id);
         this.$store.dispatch('getComments', this.id);
   },
@@ -50,6 +49,7 @@ export default {
     deletePost(post) {
       this.$store.dispatch('deletePost', post)
       .then(() => {
+        window.alert("Votre Message a bien été supprimé!")
         this.$router.push('/home');
       })
       .catch((error) => {
@@ -63,12 +63,12 @@ export default {
 <style scoped>
   #message{
     border-radius: 30px;
-    box-shadow: 0px 2px 3px rgb(126, 184, 223) ;
+    box-shadow: 0px 2px 3px rgba(183, 79, 85, 0.9) ;
     width: 80%;
     max-width: 700px;
     margin: auto;
-    margin-top: 20px;
-    margin-bottom: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px;
     padding-top: 15px;
     padding-bottom: 10px;
   }
@@ -79,6 +79,9 @@ export default {
   }
   #message h1{
     margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    overflow-wrap: break-word;
   }
   #message-content{
     width: 90%;
@@ -93,11 +96,13 @@ export default {
     margin-top: 5px;
     margin-left: 15px;
     text-align: start;
+    overflow-wrap: break-word;
   }
   h3{
     margin-top: 10px;
   }
   #btn-delete-post{
     font-size: 0.8rem;
+    margin-bottom: 20px;
   }
 </style>

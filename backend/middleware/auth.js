@@ -1,15 +1,36 @@
 const jwt = require('jsonwebtoken');
+const models = require('../models');
 
-// === Demande authentifiée avec Token ===
-module.exports = (req, res, next) => {
+// Security : check if user is loged with token
+exports.checkJWT = (req, res, next) => {
+  const token = req.headers.authorization.split(' ')[1];
+  if (token) {
+		jwt.verify(token, 'RANDOM_TOKEN_SECRET', (err, decodedToken) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(decodedToken.userId);
+				next();
+			}
+		});
+	} else {
+		console.log('no token !');
+	}
+};
+
+// Security : check if user is good user with token
+exports.checkUser = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
     const userId = decodedToken.userId;
-    if (req.body.userId && req.body.userId !== userId) {
-      throw 'Invalid user ID';
-    } else {
+    const user = models.Users.findOne({
+      where: { id: userId },
+    });
+    if (user) {
       next();
+    } else {
+      res.status(400).send({ message: "Utilisateur non trouvé" });
     }
   } catch {
     res.status(401).json({

@@ -1,8 +1,9 @@
 const models = require('../models/index');
 const fs = require('fs');
-const jwt = require('jsonwebtoken');
 
-exports.createPosts = (req, res, next) => {
+// Create Post
+exports.createPosts = (req, res) => {
+    // Empty Inputs
     if (req.body.title == "" || req.body.content == "") {
         return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
     }
@@ -18,7 +19,8 @@ exports.createPosts = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));    
 };
 
-exports.modifyPost = async (req, res, next) => {   
+// Edit Post
+exports.modifyPost = async (req, res) => {   
     const post = await models.Posts.findOne({
         where: { id: req.params.id }
     })
@@ -35,7 +37,8 @@ exports.modifyPost = async (req, res, next) => {
     .catch(error => res.status(400).json({ error }));       
 };
 
-exports.deletePost = (req, res, next) => {
+// Delete Post
+exports.deletePost = (req, res) => {
     models.Posts.findOne({ where: { id: req.params.id } })
         .then(post => {
             let filename = post.imageUrl.split('/images/')[1];
@@ -56,7 +59,8 @@ exports.deletePost = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
 };
 
-exports.getOnePost = (req, res, next) => {
+// Get One Post
+exports.getOnePost = (req, res) => {
     models.Posts.findOne({
         include: [{
             model: models.Users,
@@ -73,7 +77,8 @@ exports.getOnePost = (req, res, next) => {
     .catch(error => res.status(404).json({ error }));
 };
 
-exports.getAllPosts = (req, res, next) => {
+// Get All Posts
+exports.getAllPosts = (req, res) => {
     models.Posts.findAll({
         order: [['createdAt', 'DESC']],
         include: [{
@@ -81,7 +86,7 @@ exports.getAllPosts = (req, res, next) => {
             attributes: ['username', 'imageUrl']
         },{
             model: models.Likes,
-            attributes: ['likes', 'postId', 'userId']
+            attributes: ['likes', 'postId', 'userId','id']
         },{
             model: models.Comments,
             attributes: ['content']

@@ -1,7 +1,7 @@
 const passwordValidator = require('password-validator');
 const passwordSchema = new passwordValidator();
  
-// === Schéma pour les Mots de Pass => validation des entrées ===
+// Password Schema => validation inputs
 passwordSchema
 .is().min(8)
 .is().max(12)                                                                  

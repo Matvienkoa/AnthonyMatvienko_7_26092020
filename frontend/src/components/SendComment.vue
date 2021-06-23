@@ -3,7 +3,7 @@
   <button v-if="mode == 'sendcomment'" @click="switchToReadComments()" class="btn btn-warning" id="btn-cancel-comment">Annuler le commentaire</button>
   <div v-if="mode == 'sendcomment'" class="container" id="writeComment">
     <label for="message" class="form-label">Votre commentaire :</label>
-    <input type="text" name="message" class="form-control message" v-model="content">
+    <textarea name="message" class="form-control message" v-model="content"></textarea>
     <button @click="createComment()" class="btn btn-success">Envoyer</button>
     <div id="error" v-if="error"> {{ error.message }} </div>
   </div>
@@ -40,6 +40,7 @@ export default {
             content: this.content
         })
         .then(() => {
+            window.alert("Votre Commentaire a bien été envoyé!")
             this.$store.dispatch('getComments', this.id);
             this.switchToReadComments();
         })
@@ -57,13 +58,13 @@ export default {
   #btn-comment{
     margin-right: 10px;
   }
-  #formComment {
+  #formComment{
     width: 80%;
     margin: auto;
     padding-top: 15px;
     margin-bottom: 30px;
   }
-  input {
+  input{
     margin-bottom: 20px;
   }
   .message{

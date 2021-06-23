@@ -4,12 +4,19 @@ const jwt = require('jsonwebtoken');
 const passwordValidator = require('../middleware/passwordValidator');
 const emailValidator = require('email-validator');
 
+// Create Account
 exports.signup = (req, res) => {
-    if (req.body.email == "" || req.body.password == "") {
+    // Empty Inputs
+    if (req.body.email == "" || req.body.password == "" || req.body.username == "") {
         return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
     }
-    if ((!emailValidator.validate(req.body.email)) || (!passwordValidator.validate(req.body.password))) {
-        return res.status(400).json({ message: 'Format email/password invalide' });
+    // Bad Schema Mail
+    if (!emailValidator.validate(req.body.email)) {
+        return res.status(400).json({ message: "Format d'email invalide" });
+    }
+    // Bad Schema Password
+    if (!passwordValidator.validate(req.body.password)) {
+        return res.status(400).json({ message: "Mot de Passe invalide : Veuillez utiliser entre 8 et 12 caractères avec au minimum 1 Majuscule, 1 Minuscule et 1 Chiffre." });
     }
     bcryptjs.hash(req.body.password, 10)
         .then(hash => {
@@ -25,7 +32,9 @@ exports.signup = (req, res) => {
         .catch(error => res.status(500).json({ error }));
 };
 
+// Login
 exports.login = (req, res) => {
+    // Empty Inputs
     if (req.body.email == "" || req.body.password == "") {
         return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
     }

@@ -21,6 +21,7 @@
         <button v-if="mode == 'profile'" @click="switchToDeleteProfile()" class="btn btn-danger" id="btn-delete-profile">Supprimer mon Profil</button>
         <h2>Mes posts</h2>
         <div id="listPosts">
+            <span v-if="userInfos.posts.length < 1" id="noposts">Vous n'avez pas encore posté de message.</span>
             <ul v-for="post in userInfos.posts" :key="post.title">
                 <router-link :to="{name: 'post', params: {id: post.id}}">
                 <li> {{ post.title }} </li>
@@ -66,6 +67,7 @@ export default {
         deleteProfile(userInfos) {
             this.$store.dispatch('deleteProfile', userInfos.id)
             this.switchToProfile()
+            window.alert("Votre Profil a bien été supprimé!")
         },
     }
 }
@@ -91,10 +93,18 @@ export default {
         margin-bottom: 30px;
         margin-top: 20px;
     }
+    h2{
+        margin-top: 30px;
+    }
     ul{
         text-align: start;
         margin: auto;
         padding: 0;
+    }
+    #noposts{
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 40px;
     }
     #delete-card{
         display: flex;
@@ -107,10 +117,19 @@ export default {
         max-width: 700px;
         padding-top: 30px;
         padding-bottom: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
         margin-bottom: 30px;
+    }
+    #delete-card span{
+        color: red;
+        font-weight: bold;
     }
     #confirmationdelete{
         font-size: 1.2rem;
+    }
+    #btn-no, #btn-yes{
+        margin-left: 10px;
     }
     #btn-delete-profile{
         margin-bottom: 20px;
@@ -121,6 +140,7 @@ export default {
         max-width: 700px;
         margin: auto;
         margin-top: 30px;
+        margin-bottom: 40px;
     }
     a{
         text-decoration: none;
@@ -130,9 +150,9 @@ export default {
         font-size: 1.2rem;
         list-style: none;
         color: rgb(23, 47, 90);
-        /*border-bottom: 2px solid rgb(27, 68, 138);*/
-        box-shadow: 0px 2px 0px rgb(126, 184, 223);
+        box-shadow: 0px 2px 0px rgba(183, 79, 85, 0.9);
         margin-bottom: 15px;
+        overflow-wrap: break-word;
     }
 
     @media screen and (max-width: 700px) {

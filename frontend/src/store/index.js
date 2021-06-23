@@ -1,5 +1,6 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
 import instance from '../axios';
+const jwt = require('jsonwebtoken');
 
 // Create a new store instance.
 const store = createStore({
@@ -29,6 +30,9 @@ const store = createStore({
     getComments: (state) => {
       return state.comments
     },
+    getLikes: (state) => {
+      return state.likes
+    }
   },
 
   mutations: {
@@ -80,17 +84,8 @@ const store = createStore({
         state.comments.splice(index, 1);
       }
     },
-    ADD_LIKE: function (state, like) {
-      state.likes.push(like);
-    },
-    DELETE_LIKE: function (state, like) {
-      const index = state.likes.findIndex(l => l.id 
-        === like.id );
-      if (index !== -1) {
-        state.likes.splice(index, 1);
-      }
-    },
   },
+  
   actions: {
     login: ({ commit }, userInfos) => {
       return new Promise((resolve, reject) => {
@@ -152,10 +147,14 @@ const store = createStore({
         console.log(error);
       });
     },
-    getUserInfos: ({commit, state }) => {
-      instance.get(`/profile/${state.user.userId}`)
+    getUserInfos: ({commit}) => {
+      const token = localStorage.getItem("token");
+      const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+      const userId = decodedToken.userId;
+      instance.get(`/profile/${userId}`)
         .then(function (response) {
           commit('SET_USERINFOS', response.data);
+          commit('SET_USER', {token, userId})
         })
         .catch(function (error) {
           console.log(error);
@@ -237,19 +236,6 @@ const store = createStore({
     deleteComment: ({ commit }, comment) => {
       commit('DELETE_COMMENT', comment);
       instance.delete(`posts/${comment.postId}/comment/${comment.id}`);
-    },
-    addLike: ({ commit }, like) => {
-      instance.post(`/posts/${like.postId}/like`, like)
-      .then((response) => {
-        commit('ADD_LIKE', response.data);
-      })
-      .catch(error => {
-        console.log({ error: error })
-      })
-    },
-    deleteLike: ({ commit }, like) => {
-      commit('DELETE_LIKE', like);
-      instance.delete(`posts/${like.postId}/like/${like.id}`);
     },
   },
 });
