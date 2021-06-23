@@ -26,10 +26,10 @@ Import Data with the "dump" file in deliverables.
 
 From within the project folder, create an .env file, enter the following lines and complete with your login (MySQL connexion) :
 
-DB_USERNAME=''
-DB_PASSWORD=''
-DB_DATABASE='groupomania'
-DB_HOST=''
+DB_USERNAME='YourUsername'<br/>
+DB_PASSWORD='YourPassword'<br/>
+DB_DATABASE='groupomania'<br/>
+DB_HOST='YourHostname'
 
 Then run "npm install". 
 
