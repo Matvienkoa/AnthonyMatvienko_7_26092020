@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div v-if="getPosts.length === 0" id="nopost">
       Il n'y a pas encore de Publication pour le moment...<br/>
       Allez-y, Lancez la discussion !!!
@@ -30,6 +31,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>

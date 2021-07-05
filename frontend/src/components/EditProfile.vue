@@ -1,12 +1,14 @@
 <template>
-    <button v-if="mode == 'readprofile'" @click="switchToEditProfile()" class="btn btn-success">Modifier mon Profil</button>
-    <button v-if="mode == 'editprofile'" @click="switchToReadProfile()" class="btn btn-warning">Annuler la Modification</button>
-    <div id="edit-card">
-        <div v-if="mode == 'editprofile'" id="form"> 
-            <input v-model="username" type="text" class="form-control" placeholder="Username">
-            <input v-model="poste" type="text" class="form-control" placeholder="Poste occupé">
-            <button @click="editProfile()" class="btn btn-success">Modifier</button>
-            <div id="error" v-if="error"> {{ error.message }} </div>
+    <div>
+        <button v-if="mode === 'readprofile'" @click="switchToEditProfile()" class="btn btn-success">Modifier mon Profil</button>
+        <button v-if="mode === 'editprofile'" @click="switchToReadProfile()" class="btn btn-warning">Annuler la Modification</button>
+        <div id="edit-card">
+            <div v-if="mode === 'editprofile'" id="form"> 
+                <input v-model="username" type="text" class="form-control" placeholder="Username">
+                <input v-model="poste" type="text" class="form-control" placeholder="Poste occupé">
+                <button @click="editProfile()" class="btn btn-success">Modifier</button>
+                <div id="error" v-if="error"> {{ error.message }} </div>
+            </div>
         </div>
     </div>
 </template>
@@ -36,9 +38,9 @@ export default {
                 userId: this.$store.state.user.userId
             })
             .then(() => {
-                window.alert("Votre Profil a bien été modifié!")
                 this.$store.dispatch('getUserInfos');
                 this.switchToReadProfile();
+                window.alert("Votre Profil a bien été modifié!")
             })
             .catch((error) => {
                 this.error = error.response.data

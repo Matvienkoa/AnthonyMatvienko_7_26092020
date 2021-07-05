@@ -4,7 +4,7 @@ const fs = require('fs');
 // Create Post
 exports.createPosts = (req, res) => {
     // Empty Inputs
-    if (req.body.title == "" || req.body.content == "") {
+    if (req.body.title === "" || req.body.content === "") {
         return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
     }
     models.Posts.create({
@@ -21,6 +21,10 @@ exports.createPosts = (req, res) => {
 
 // Edit Post
 exports.modifyPost = async (req, res) => {   
+    // Empty Inputs
+    if (req.body.title === "" || req.body.content === "") {
+        return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
+    }
     const post = await models.Posts.findOne({
         where: { id: req.params.id }
     })

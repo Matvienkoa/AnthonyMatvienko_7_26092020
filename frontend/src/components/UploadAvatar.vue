@@ -2,7 +2,7 @@
   <div v-if="userInfos.imageUrl" id="avatar">
       <img :src="userInfos.imageUrl" />
   </div>
-  <div v-if="userInfos.imageUrl == null || userInfos.imageUrl == ''" id="upload-avatar">
+  <div v-if="userInfos.imageUrl === null || userInfos.imageUrl === ''" id="upload-avatar">
     <form @submit.prevent="uploadAvatar" id="form">
       <label for="image" class="form-label">Ajouter un Avatar :</label>
       <input @change="onFileSelected" type="file" ref="imageUrl" name="image" class="form-control" required>
@@ -32,11 +32,11 @@ export default {
             formData.append("imageUrl", this.imageUrl);
             axiosConfig.post(`/profile/${this.$store.state.user.userId}/upload`, formData)
             .then(() => {
-              window.alert("Votre Avatar a bien été Ajouté!")
               this.$store.dispatch('getUserInfos');
+              window.alert("Votre Avatar a bien été Ajouté!");
             })
             .catch((error) => {
-                this.error = error.response.data
+                this.error = error.response.data;
                 console.log(error.response.data);
             })
             this.imageUrl = null

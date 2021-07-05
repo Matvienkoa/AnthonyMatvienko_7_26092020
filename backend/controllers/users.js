@@ -4,7 +4,7 @@ const fs = require('fs');
 // Edit Profile
 exports.modifyUser = (req, res) => {
     // Empty Inputs
-    if (req.body.username == "") {
+    if (req.body.username === "") {
         return res.status(400).json({ message: "Merci de renseigner un nom d'utilisateur"});
     }
     models.Users.findOne({ where: { id: req.params.id } })

@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div id="comment-card">
       <p id="comment-user">{{ comment.user.username }} a commenté:</p>
       <span id="moment-comment"> {{  moment(comment.createdAt).fromNow() }} </span>
@@ -6,7 +7,8 @@
         <p>{{ comment.content }}</p>
       </div>
     </div>
-    <button v-if="comment.userId == user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete" @click.prevent="deleteComment(comment)">Supprimer le Commentaire</button>
+    <button v-if="comment.userId === user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete" @click.prevent="deleteComment(comment)">Supprimer le Commentaire</button>
+  </div>
 </template>
 
 <script>

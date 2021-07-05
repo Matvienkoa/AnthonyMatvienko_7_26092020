@@ -1,19 +1,19 @@
 <template>
-  <Nav/>
-  <div id="message">
-    <h1>{{post.title}}</h1>
-    <img :src="post.imageUrl" />
-    <div id="message-content">
-      <p> {{ post.content }} </p>
+  <div>
+    <Nav/>
+    <div id="message">
+      <h1>{{post.title}}</h1>
+      <img :src="post.imageUrl" />
+      <div id="message-content">
+        <p> {{ post.content }} </p>
+      </div>
     </div>
-  </div>
-  <div id="buttons">
     <SendComment :id="id"/>
-    <EditPost :id="id" v-if="post.userId == user.userId || userInfos.isAdmin === 1"/>
+    <EditPost :id="id" v-if="post.userId === user.userId || userInfos.isAdmin === 1"/>
+    <button v-if="post.userId === user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete-post" @click.prevent="deletePost(post)">Supprimer le post</button>
+    <h3 v-if="post.comments && post.comments.length > 0">Commentaires</h3>
+    <CommentCard v-for="comment in comments" :key="comment.id" :comment="comment" />
   </div>
-  <button v-if="post.userId == user.userId || userInfos.isAdmin === 1" class="btn btn-danger" id="btn-delete-post" @click.prevent="deletePost(post)">Supprimer le post</button>
-  <h3 v-if="post.comments && post.comments.length > 0">Commentaires</h3>
-  <CommentCard v-for="comment in comments" :key="comment.id" :comment="comment" />
 </template>
 
 <script>

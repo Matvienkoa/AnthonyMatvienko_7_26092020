@@ -1,11 +1,13 @@
 <template>
-  <button v-if="mode == 'readcomments'"  @click="switchToSendComment()" class="btn btn-success" id="btn-comment">Commenter</button>
-  <button v-if="mode == 'sendcomment'" @click="switchToReadComments()" class="btn btn-warning" id="btn-cancel-comment">Annuler le commentaire</button>
-  <div v-if="mode == 'sendcomment'" class="container" id="writeComment">
-    <label for="message" class="form-label">Votre commentaire :</label>
-    <textarea name="message" class="form-control message" v-model="content"></textarea>
-    <button @click="createComment()" class="btn btn-success">Envoyer</button>
-    <div id="error" v-if="error"> {{ error.message }} </div>
+  <div>
+    <button v-if="mode === 'readcomments'"  @click="switchToSendComment()" class="btn btn-success" id="btn-comment">Commenter</button>
+    <button v-if="mode === 'sendcomment'" @click="switchToReadComments()" class="btn btn-warning" id="btn-cancel-comment">Annuler le commentaire</button>
+    <div v-if="mode === 'sendcomment'" class="container" id="writeComment">
+      <label for="message" class="form-label">Votre commentaire :</label>
+      <textarea name="message" class="form-control message" v-model="content"></textarea>
+      <button @click="createComment()" class="btn btn-success">Envoyer</button>
+      <div id="error" v-if="error"> {{ error.message }} </div>
+    </div>
   </div>
 </template>
 
@@ -40,9 +42,9 @@ export default {
             content: this.content
         })
         .then(() => {
-            window.alert("Votre Commentaire a bien été envoyé!")
             this.$store.dispatch('getComments', this.id);
             this.switchToReadComments();
+            window.alert("Votre Commentaire a bien été envoyé!")
         })
         .catch((error) => {
           this.error = error.response.data

@@ -1,17 +1,19 @@
 <template>
-  <button v-if="mode == 'readpost'" @click="switchToSendPost()" class="btn btn-success">Ecrire un message</button>
-  <button v-if="mode == 'sendpost'" @click="switchToReadPost()" class="btn btn-warning">Annuler le message</button>
-  <div v-if="mode == 'sendpost'" class="container" id="writePost">
-    <form @submit.prevent="createPost" id="formPost">
-      <h2> {{ getUserInfos.username }}, exprimez-vous :</h2>
-      <label for="title" class="form-label">Titre de votre message :</label>
-      <input type="textarea" name="title" class="form-control" v-model="title" required>
-      <label for="message" class="form-label">Votre message :</label>
-      <textarea name="message" class="form-control message" v-model="content" required></textarea>
-      <label for="file" class="form-label">Vous pouvez joindre une image :</label>
-      <input type="file" @change="onFileSelected" class="form-control">
-      <button type="submit" class="btn btn-success">Envoyer</button>
-    </form>
+  <div>
+    <button v-if="mode === 'readpost'" @click="switchToSendPost()" class="btn btn-success">Ecrire un message</button>
+    <button v-if="mode === 'sendpost'" @click="switchToReadPost()" class="btn btn-warning">Annuler le message</button>
+    <div v-if="mode === 'sendpost'" class="container" id="writePost">
+      <form @submit.prevent="createPost" id="formPost">
+        <h2> {{ getUserInfos.username }}, exprimez-vous :</h2>
+        <label for="title" class="form-label">Titre de votre message :</label>
+        <input type="textarea" name="title" class="form-control" v-model="title" required>
+        <label for="message" class="form-label">Votre message :</label>
+        <textarea name="message" class="form-control message" v-model="content" required></textarea>
+        <label for="file" class="form-label">Vous pouvez joindre une image :</label>
+        <input type="file" @change="onFileSelected" class="form-control">
+        <button type="submit" class="btn btn-success">Envoyer</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -56,12 +58,12 @@ export default {
       }
       axiosConfig.post('/posts', formData, {method: 'post'})
       .then(() => {
-        window.alert("Votre Message a bien été envoyé!")
-        this.$store.dispatch("getAllPosts")
+        this.$store.dispatch("getAllPosts");
         this.switchToReadPost();
+        window.alert("Votre Message a bien été envoyé!");
       })
       .catch((error) => {
-          this.error = error.response.data
+          this.error = error.response.data;
           console.log(error.response.data);
       })
       this.content = ""

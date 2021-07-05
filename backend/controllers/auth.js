@@ -7,7 +7,7 @@ const emailValidator = require('email-validator');
 // Create Account
 exports.signup = (req, res) => {
     // Empty Inputs
-    if (req.body.email == "" || req.body.password == "" || req.body.username == "") {
+    if (req.body.email === "" || req.body.password === "" || req.body.username === "") {
         return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
     }
     // Bad Schema Mail
@@ -35,7 +35,7 @@ exports.signup = (req, res) => {
 // Login
 exports.login = (req, res) => {
     // Empty Inputs
-    if (req.body.email == "" || req.body.password == "") {
+    if (req.body.email === "" || req.body.password === "") {
         return res.status(400).json({ message: "Merci de renseigner tous les Champs Obligatoires"});
     }
     models.Users.findOne({where: { email: req.body.email } })

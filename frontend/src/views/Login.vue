@@ -4,16 +4,16 @@
       <img src="../assets/icon-above-font.svg" alt="" id="logoLogin"/>
     </div>
     <div id="loginForm">
-      <h2 v-if="mode == 'login'">Se connecter</h2>
+      <h2 v-if="mode === 'login'">Se connecter</h2>
       <h2 v-else>S'inscrire</h2>
-      <p v-if="mode == 'login'">Tu n'as pas encore de compte? <span @click="switchToCreateAccount()" id="create">Créer un compte</span></p>
+      <p v-if="mode === 'login'">Tu n'as pas encore de compte? <span @click="switchToCreateAccount()" id="create">Créer un compte</span></p>
       <p v-else>Tu as déjà un compte? <span @click="switchToLogin()" id="login">Se connecter</span></p>
       <div class="form"> 
         <input v-model="email" type="email" class="form-control" placeholder="Adresse mail" required>
-        <input v-model="username" type="text" class="form-control" placeholder="Nom d'Utilisateur" v-if="mode == 'create'" required>
-        <input v-model="poste" type="text" class="form-control" placeholder="Poste occupé (Facultatif)" v-if="mode == 'create'" required>
+        <input v-model="username" type="text" class="form-control" placeholder="Nom d'Utilisateur" v-if="mode === 'create'" required>
+        <input v-model="poste" type="text" class="form-control" placeholder="Poste occupé (Facultatif)" v-if="mode === 'create'" required>
         <input v-model="password" type="password" class="form-control" placeholder="Mot de passe" required>
-        <button @click="login()" class="btn btn-primary" v-if="mode == 'login'">Connexion</button>
+        <button @click="login()" class="btn btn-primary" v-if="mode === 'login'">Connexion</button>
         <button @click="createAccount()" class="btn btn-primary" v-if="mode == 'create'">Inscription</button>
         <div id="error" v-if="error"> {{ error.message }} </div>
       </div>

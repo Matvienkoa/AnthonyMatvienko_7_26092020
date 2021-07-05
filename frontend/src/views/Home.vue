@@ -1,8 +1,10 @@
 <template>
-  <Nav/>
-  <h1>Bienvenue sur le mur des Publications!</h1>
-  <SendPost/>
-  <PostsList/>
+  <div>
+    <Nav/>
+    <h1>Bienvenue sur le mur des Publications!</h1>
+    <SendPost/>
+    <PostsList/>
+  </div>
 </template>
 
 <script>

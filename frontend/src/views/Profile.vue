@@ -1,32 +1,34 @@
 <template>
-    <Nav/>
-    <div id="profileInfos">
-        <h1>Mes Informations</h1>
-        <div id="infosContainer">
-            <UploadAvatar :userInfos="userInfos"/>
-            <div id="infos">
-                <p>Nom d'utilisateur : {{ userInfos.username }}</p>
-                <p>Poste occupé : {{ userInfos.poste }}</p>
-                <p>Adresse mail : {{ userInfos.email }}</p>
+    <div>
+        <Nav/>
+        <div id="profileInfos">
+            <h1>Mes Informations</h1>
+            <div id="infosContainer">
+                <UploadAvatar :userInfos="userInfos"/>
+                <div id="infos">
+                    <p>Nom d'utilisateur : {{ userInfos.username }}</p>
+                    <p>Poste occupé : {{ userInfos.poste }}</p>
+                    <p>Adresse mail : {{ userInfos.email }}</p>
+                </div>
             </div>
-        </div>
-        <EditProfile/>
-        <div v-if="mode == 'deleteprofile'" id="delete-card">
-            <span id="confirmationdelete">Etes-vous sûr de vouloir supprimer votre Profil?</span>
-            <router-link to="/">
-                <button @click="deleteProfile(userInfos)" class="btn btn-success" id="btn-yes">Oui</button>
-            </router-link>
-            <button @click="switchToProfile()" class="btn btn-danger" id="btn-no">Non</button>
-        </div>
-        <button v-if="mode == 'profile'" @click="switchToDeleteProfile()" class="btn btn-danger" id="btn-delete-profile">Supprimer mon Profil</button>
-        <h2>Mes posts</h2>
-        <div id="listPosts">
-            <span v-if="userInfos.posts.length < 1" id="noposts">Vous n'avez pas encore posté de message.</span>
-            <ul v-for="post in userInfos.posts" :key="post.title">
-                <router-link :to="{name: 'post', params: {id: post.id}}">
-                <li> {{ post.title }} </li>
+            <EditProfile/>
+            <div v-if="mode == 'deleteprofile'" id="delete-card">
+                <span id="confirmationdelete">Etes-vous sûr de vouloir supprimer votre Profil?</span>
+                <router-link to="/">
+                    <button @click="deleteProfile(userInfos)" class="btn btn-success" id="btn-yes">Oui</button>
                 </router-link>
-            </ul>
+                <button @click="switchToProfile()" class="btn btn-danger" id="btn-no">Non</button>
+            </div>
+            <button v-if="mode == 'profile'" @click="switchToDeleteProfile()" class="btn btn-danger" id="btn-delete-profile">Supprimer mon Profil</button>
+            <h2>Mes posts</h2>
+            <div id="listPosts">
+                <!--<span v-if="userInfos.posts.length < 1" id="noposts">Vous n'avez pas encore posté de message.</span>-->
+                <ul v-for="post in userInfos.posts" :key="post.title">
+                    <router-link :to="{name: 'post', params: {id: post.id}}">
+                    <li> {{ post.title }} </li>
+                    </router-link>
+                </ul>
+            </div>
         </div>
     </div> 
 </template>

@@ -1,17 +1,19 @@
 <template>
-  <button v-if="mode == 'readpost'" @click="switchToEditPost()" class="btn btn-success">Modifier le Post</button>
-  <button v-if="mode == 'editpost'" @click="switchToReadPost()" class="btn btn-warning">Annuler la modification</button>
-  <div v-if="mode == 'editpost'" class="container" id="writePost">
-    <form @submit.prevent="editPost()" id="formPost">
-      <h2> {{ $store.state.userInfos.username }}, modifiez votre post :</h2>
-      <label for="title" class="form-label">Titre de votre message :</label>
-      <input type="text" name="title" class="form-control" v-model="title" required>
-      <label for="message" class="form-label">Votre message :</label>
-      <input type="text" name="message" class="form-control message" v-model="content" required>
-      <label for="image" class="form-label">Vous pouvez joindre une image :</label>
-      <input @change="onFileSelected" type="file" ref="imageUrl" name="image" class="form-control">
-      <button type="submit" class="btn btn-success">Modifier</button>
-    </form>
+  <div>
+    <button v-if="mode === 'readpost'" @click="switchToEditPost()" class="btn btn-success">Modifier le Post</button>
+    <button v-if="mode === 'editpost'" @click="switchToReadPost()" class="btn btn-warning">Annuler la modification</button>
+    <div v-if="mode === 'editpost'" class="container" id="writePost">
+      <form @submit.prevent="editPost()" id="formPost">
+        <h2> {{ $store.state.userInfos.username }}, modifiez votre post :</h2>
+        <label for="title" class="form-label">Titre de votre message :</label>
+        <input type="text" name="title" class="form-control" v-model="title" required>
+        <label for="message" class="form-label">Votre message :</label>
+        <input type="text" name="message" class="form-control message" v-model="content" required>
+        <label for="image" class="form-label">Vous pouvez joindre une image :</label>
+        <input @change="onFileSelected" type="file" ref="imageUrl" name="image" class="form-control">
+        <button type="submit" class="btn btn-success">Modifier</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -55,9 +57,9 @@ export default {
       }
       axiosConfig.put(`/posts/${this.id}`, formData)
       .then(() => {
-        window.alert("Votre Message a bien été Modifié!")
         this.$store.dispatch('getOnePost', this.id);
         this.switchToReadPost();
+        window.alert("Votre Message a bien été Modifié!")
       })
       .catch((error) => {
           this.error = error.response.data

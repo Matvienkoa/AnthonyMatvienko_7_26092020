@@ -3,7 +3,7 @@ const models = require('../models/index');
 // Create Comment
 exports.createComment = (req, res) => {
     // Empty Inputs
-    if (req.body.content == "") {
+    if (req.body.content === "") {
         return res.status(400).json({ message: "Merci de renseigner un commentaire"});
     }
     models.Comments.create({
@@ -17,6 +17,10 @@ exports.createComment = (req, res) => {
 
 // Edit Comment
 exports.modifyComment = (req, res) => {
+    // Empty Inputs
+    if (req.body.content === "") {
+        return res.status(400).json({ message: "Merci de renseigner un commentaire"});
+    }
     models.Comments.update(
         {
             content: req.body.content
