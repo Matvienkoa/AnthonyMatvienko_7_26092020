@@ -1,6 +1,6 @@
 <template>
   <div v-if="userInfos.imageUrl" id="avatar">
-      <img :src="userInfos.imageUrl" />
+      <img :src="userInfos.imageUrl" alt="photo de profil de l'utilisateur" />
   </div>
   <div v-if="userInfos.imageUrl === null || userInfos.imageUrl === ''" id="upload-avatar">
     <form @submit.prevent="uploadAvatar" id="form">

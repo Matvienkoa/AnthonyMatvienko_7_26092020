@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-light" >
         <router-link to="/home">
-            <img src="../assets/icon-left-font-monochrome-white.svg" alt=""/>
+            <img src="../assets/icon-left-font-monochrome-white.svg" alt="Logo Groupomania qui pointe vers accueil"/>
         </router-link>
         <div>
         <router-link to="/home" title="Aller vers le mur des Publications">

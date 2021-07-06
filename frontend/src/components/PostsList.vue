@@ -7,14 +7,14 @@
     <div v-for="post in getPosts" :key="post.id" class="post">
       <div id="user">
         <span v-if="post.user.imageUrl != null" id="avatar-card">
-          <img id="avatar" :src="post.user.imageUrl" />
+          <img id="avatar" alt="photo de profil de l'utilisateur" :src="post.user.imageUrl" />
         </span>
         <h1> {{ post.user.username }} a écrit:</h1>
       </div>
       <router-link :to="{name: 'post', params: {id: post.id}}">
         <div id="message">
           <h2> {{ post.title }} </h2>
-          <img :src="post.imageUrl" />
+          <img :src="post.imageUrl" alt="Photo du message publié par l'utilisateur" />
           <div id="message-content">
             <p id="content-post"> {{ post.content }} </p>
           </div>

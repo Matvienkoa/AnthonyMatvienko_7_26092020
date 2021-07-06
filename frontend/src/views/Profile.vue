@@ -22,11 +22,8 @@
             <button v-if="mode == 'profile'" @click="switchToDeleteProfile()" class="btn btn-danger" id="btn-delete-profile">Supprimer mon Profil</button>
             <h2>Mes posts</h2>
             <div id="listPosts">
-                <!--<span v-if="userInfos.posts.length < 1" id="noposts">Vous n'avez pas encore posté de message.</span>-->
                 <ul v-for="post in userInfos.posts" :key="post.title">
-                    <router-link :to="{name: 'post', params: {id: post.id}}">
-                    <li> {{ post.title }} </li>
-                    </router-link>
+                    <li><router-link :to="{name: 'post', params: {id: post.id}}"> {{ post.title }} </router-link></li>
                 </ul>
             </div>
         </div>

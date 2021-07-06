@@ -97,7 +97,7 @@
   #create, #login{
     text-decoration: underline;
     cursor: pointer;
-    color: rgb(51, 134, 243);
+    color: rgb(8, 84, 184);
     margin-left: 10px;
   }
   #error{

@@ -3,7 +3,7 @@
     <Nav/>
     <div id="message">
       <h1>{{post.title}}</h1>
-      <img :src="post.imageUrl" />
+      <img :src="post.imageUrl" alt="Photo du message publié par l'utilisateur" />
       <div id="message-content">
         <p> {{ post.content }} </p>
       </div>
