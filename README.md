@@ -6,14 +6,6 @@
 
 Develop an internal social network
 
-## Techno utilisées
-
-Javascript
-
-Node.js
-
-Express
-
 ## Prerequisites
 
 You will need to have NodeJS, Express, Sequelize, Mysql and Npm installed locally on your machine.
