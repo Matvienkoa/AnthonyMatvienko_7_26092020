@@ -1,6 +1,18 @@
-# Groupomania
+# 7ème Projet Formation Développeur Web OCR
 
-This is the Project 7 of the Junior Developer path of Openclassrooms.
+![enter image description here](https://raw.githubusercontent.com/Matvienkoa/AnthonyMatvienko_7_26092020/794587b6f9344774186ab1830e8b731adf984f39/frontend/src/assets/icon-left-font-monochrome-white.svg)
+
+## Goal
+
+Develop an internal social network
+
+## Techno utilisées
+
+Javascript
+
+Node.js
+
+Express
 
 ## Prerequisites
 
